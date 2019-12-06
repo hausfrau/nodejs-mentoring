@@ -1,16 +1,18 @@
-"use strict";
+'use strict';
 
-var _common = require("./common");
+var _common = require('./common');
 
-var common = _interopRequireWildcard(_common);
+var csvFilePath = './csv/example.csv';
+var txtFilePath = './txt/json.txt';
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var input = (0, _common.createReadStream)(csvFilePath);
+var output = (0, _common.createWriteStream)(txtFilePath);
 
 input.on("error", function () {
     return console.error("Input file not Found!");
 });
 
-csv({
+(0, _common.csv)({
     ignoreColumns: /(Amount)/,
     headers: ['book', 'author', 'price']
 }).fromStream(input).subscribe(function (jsonData) {
