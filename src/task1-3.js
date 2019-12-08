@@ -1,4 +1,4 @@
-import {csv, path, createReadStream, createWriteStream} from "./common";
+import {csv, createReadStream, createWriteStream} from "./common";
 
 const csvFilePath = './csv/example.csv';
 const txtFilePath = './txt/json.txt';

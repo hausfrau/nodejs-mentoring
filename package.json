@@ -6,7 +6,7 @@
   "scripts": {
     "task1": "nodemon task1-1.js",
     "task2": "nodemon task1-2.js",
-    "watch" : "babel src -d dist --presets env -w"
+    "task3": "nodemon --exec babel-node src/task1-3.js"
   },
   "repository": {
     "type": "git",
@@ -24,8 +24,9 @@
     "readline": "^1.3.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0"
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/node": "^7.7.4",
+    "@babel/preset-env": "^7.7.4"
   }
 }

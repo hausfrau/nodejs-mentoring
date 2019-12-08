@@ -1,3 +1,4 @@
-export const csv = require('csvtojson');
-export const path = require("path");
-export const {createReadStream, createWriteStream} = require("fs");
+import csv from "csvtojson";
+import {createReadStream, createWriteStream} from 'fs';
+
+export {csv, createReadStream, createWriteStream};
