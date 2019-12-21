@@ -1,0 +1,36 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "lib": ["es2015", "es2016"],
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+
+    // strictFunctionTypes will trigger errors with decorators.
+    "strictFunctionTypes": false,
+
+    // strictNullChecks is almost impossible to turn on, it will give you countless errors
+    "strictNullChecks": false,
+
+    "noImplicitAny": false,
+
+    // strictPropertyInitialization depends on nullChecks
+    "strictPropertyInitialization": false,
+
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

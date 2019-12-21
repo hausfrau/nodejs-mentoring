@@ -1,3 +1,3 @@
 # Nodejs mentoring
-## Task 2-1
+## Task 1-3
 ### author: Ogarkova Olga
