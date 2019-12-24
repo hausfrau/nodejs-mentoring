@@ -1,8 +1,11 @@
 import {Request, Response, Router} from 'express';
+import {ValidatedRequest} from 'express-joi-validation';
 import uuidv1 from 'uuid/v1';
 
+import {postAndPutUserSchema} from '../schemes/users-api';
 import {getAutoSuggestUsers, getUser} from '../utils/users';
-import {User} from '../types/users-types';
+import {validateSchema} from '../utils/validation.js';
+import {User, GetUsersSchema, GetUsersByIdSchema} from '../types/users-types';
 
 export const router = Router();
 
@@ -29,8 +32,8 @@ let users: User[] = [
         isDeleted: false
     }];
 
-router.route('/')
-    .get((req: Request, res: Response) => {
+router
+    .get('/', (req: ValidatedRequest<GetUsersSchema>, res: Response) => {
         if (req.query.login) {
             const limit = parseInt(req.query.limit, 10) || 1;
             const {login} = req.query;
@@ -39,14 +42,8 @@ router.route('/')
         } else {
             res.send('Hello!');
         }
-    });
-
-router.route('/users')
-    .get((_req: Request, res: Response) => {
-            res.json(users)
-        }
-    )
-    .post((req: Request, res: Response) => {
+    })
+    .post('/',  validateSchema(postAndPutUserSchema), (req: Request, res: Response) => {
         const {body} = req;
         const newUser = {
             ...body,
@@ -57,29 +54,32 @@ router.route('/users')
         users.push(newUser);
 
         res.json(users);
-    });
-
-router.route('/user/:userId')
-    .get((req: Request, res: Response) => {
+    })
+    .get('/:userId', (req: ValidatedRequest<GetUsersByIdSchema>, res: Response) => {
         const {params: {userId}} = req;
 
-        res.json(getUser(users, userId)) ;
+        res.json(getUser(users, userId));
     })
-    .put((req: Request, res: Response) => {
+    .put('/:userId', validateSchema(postAndPutUserSchema), (req: Request, res: Response) => {
+        const {params: {userId}} = req;
         const {body} = req;
 
-        users = users.map((user: User) => user.id === body.id ? body : user);
+        users = users.map((user: User) => user.id === userId ? {
+            ...user,
+            ...body
+        } : user);
 
-        res.json(getUser(users, body.id));
+        console.log('put users=', users);
+        res.json(getUser(users, userId));
     })
-    .delete((req: Request, res: Response) => {
+    .delete('/:userId', (req: ValidatedRequest<GetUsersByIdSchema>, res: Response) => {
         const {params: {userId}} = req;
 
-        users = users.map((user: User) => user.id === userId ? ({
-                ...user,
-                isDeleted: true
-            }) : user
-        );
+        users = users.map((user) => user.id === userId ? {
+            ...user,
+            isDeleted: true
+        } : user);
 
         res.json(users);
     });
+//

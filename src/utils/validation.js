@@ -16,7 +16,7 @@ export  function validateSchema(schema) {
             allowUnknown: false
         });
 
-        if (error.isJoi) {
+        if (error && error.isJoi) {
             res.status(400).json(errorResponse(error.details));
         } else {
             next();
