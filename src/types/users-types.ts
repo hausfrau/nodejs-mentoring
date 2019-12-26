@@ -23,3 +23,23 @@ export interface GetUsersByIdSchema extends ValidatedRequestSchema {
         userId: string;
     };
 }
+
+export interface PostUserSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Body]: {
+        login: string;
+        password: string;
+        age: number;
+    };
+}
+
+export interface PutUserSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Params]: {
+        userId: string;
+    };
+}
+
+export interface DeleteUserSchema extends ValidatedRequestSchema {
+    [ContainerTypes.Params]: {
+        userId: string;
+    };
+}

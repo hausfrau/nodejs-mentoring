@@ -1,7 +1,9 @@
 import express, {json} from 'express';
+
 import { router } from './api/users-api';
 
 export const app = express();
+
 const {PORT = 3000} = process.env;
 
 app.use(json());
