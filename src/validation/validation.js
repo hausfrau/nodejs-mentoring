@@ -9,7 +9,7 @@ export function errorResponse(schemaErrors) {
     }
 };
 
-export  function validateBodySchema(schema) {
+export function validateBodySchema(schema) {
     return (req, res, next) => {
         const {error} = schema.validate(req.body, {
             abortEarly: false,
@@ -24,7 +24,7 @@ export  function validateBodySchema(schema) {
     };
 }
 
-export  function validateQuerySchema(schema) {
+export function validateQuerySchema(schema) {
     return (req, res, next) => {
         const {error} = schema.validate(req.query, {
             abortEarly: false,
@@ -39,7 +39,7 @@ export  function validateQuerySchema(schema) {
     };
 }
 
-export  function validateParamsSchema(schema) {
+export function validateParamsSchema(schema) {
     return (req, res, next) => {
         const {error} = schema.validate(req.params, {
             abortEarly: false,

@@ -7,30 +7,42 @@ class User extends Model {
     public password!: string;
     public age!: number;
     public isDeleted!: boolean;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 }
 
 User.init({
         id: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
             unique: true,
             allowNull: false
         },
         login: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(128),
             unique: true,
             allowNull: false
         },
         password: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(128),
             allowNull: false
         },
         age: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         isDeleted: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        createdAt: {
+            allowNull: false,
+            type: DataTypes.DATE
+        },
+        updatedAt: {
+            allowNull: false,
+            type: DataTypes.DATE
         }
     },
     {
