@@ -17,7 +17,6 @@ export const postAndPutUserSchema = Joi.object({
     age: Joi.number().min(4).max(130).required()
 });
 
-
 export const getUsersSchema = Joi.object({
     login: Joi.string().required(),
     limit: Joi.string().required()

@@ -2,9 +2,7 @@ import {
     Response,
     Router
 } from 'express';
-
 import {ValidatedRequest} from 'express-joi-validation';
-
 import uuidv1 from 'uuid/v1';
 
 import {
@@ -14,20 +12,13 @@ import {
     putUserParamsSchema,
     deleteUserSchema
 } from '../schemes/users-api';
-
-import {
-    getAutoSuggestUsers,
-    getUser
-} from '../utils/users';
-
+import UserModel from '../models/user';
 import {
     validateBodySchema,
     validateQuerySchema,
     validateParamsSchema
 } from '../utils/validation.js';
-
 import {
-    User,
     GetUsersSchema,
     GetUsersByIdSchema,
     PostUserSchema,
@@ -36,29 +27,6 @@ import {
 } from '../types/users-types';
 
 export const router = Router();
-
-let users: User[] = [
-    {
-        id: "5",
-        login: "user5",
-        password: "678",
-        age: 19,
-        isDeleted: false
-    },
-    {
-        id: "1",
-        login: "user1",
-        password: "123",
-        age: 21,
-        isDeleted: false
-    },
-    {
-        id: "2",
-        login: "user2",
-        password: "234",
-        age: 20,
-        isDeleted: false
-    }];
 
 router
     .get(
@@ -69,25 +37,29 @@ router
                 const limit = parseInt(req.query.limit, 10) || 1;
                 const {login} = req.query;
 
-                res.json(getAutoSuggestUsers(users, login, limit));
+                UserModel
+                    .findAll({
+                        where: {
+                            login: login
+                        },
+                        limit: limit
+                    })
+                    .then((users => res.json(users)))
             }
-
-            res.json(users);
         })
     .post(
         '/',
         validateBodySchema(postAndPutUserSchema),
         (req: ValidatedRequest<PostUserSchema>, res: Response) => {
             const {body} = req;
-            const newUser = {
-                ...body,
-                id: uuidv1(),
-                isDeleted: false
-            };
 
-            users.push(newUser);
-
-            res.json(users);
+            UserModel
+                .create({
+                    ...body,
+                    id: uuidv1(),
+                    isDeleted: false
+                })
+                .then((user) => res.json(user));
         })
     .get(
         '/:userId',
@@ -95,7 +67,9 @@ router
         (req: ValidatedRequest<GetUsersByIdSchema>, res: Response) => {
             const {params: {userId}} = req;
 
-            res.json(getUser(users, userId));
+            UserModel
+                .findByPk(userId)
+                .then((user) => res.json(user));
         })
     .put('/:userId',
         validateBodySchema(postAndPutUserSchema),
@@ -104,12 +78,16 @@ router
             const {params: {userId}} = req;
             const {body} = req;
 
-            users = users.map((user: User) => user.id === userId ? {
-                ...user,
-                ...body
-            } : user);
-
-            res.json(getUser(users, userId));
+            UserModel
+                .update({
+                        ...body
+                    },
+                    {
+                        where: {
+                            id: userId
+                        }
+                    })
+                .then(() => res.json(userId))
         })
     .delete(
         '/:userId',
@@ -117,10 +95,11 @@ router
         (req: ValidatedRequest<DeleteUserSchema>, res: Response) => {
             const {params: {userId}} = req;
 
-            users = users.map((user) => user.id === userId ? {
-                ...user,
-                isDeleted: true
-            } : user);
-
-            res.json(users);
+            UserModel
+                .destroy({
+                    where: {
+                        id: userId
+                    }
+                })
+                .then(() => res.json(userId))
         });
