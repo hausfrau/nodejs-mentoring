@@ -1,6 +1,7 @@
 import express, {json} from 'express';
 
-import {router} from './routers/users';
+import {usersRouter} from './routers/users';
+import {groupsRouter} from './routers/groups';
 import db from './database';
 
 export const app = express();
@@ -8,7 +9,8 @@ export const app = express();
 const {PORT = 3000} = process.env;
 
 app.use(json());
-app.use('/api/users', router);
+app.use('/api/users', usersRouter);
+app.use('/api/groups', groupsRouter);
 
 db
     .sync()

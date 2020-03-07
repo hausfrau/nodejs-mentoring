@@ -25,9 +25,9 @@ import {
 } from '../types/users-types';
 import UsersService from '../services/users';
 
-export const router = Router();
+export const usersRouter = Router();
 
-router
+usersRouter
     .get(
         '/',
         validateQuerySchema(getUsersSchema),
