@@ -16,3 +16,9 @@ export const putGroupParamsSchema = Joi.object({
 export const deleteGroupSchema = Joi.object({
     id: Joi.string().required()
 });
+
+const idSchema = Joi.string().guid({ version: ['uuidv1'] });
+
+export const addUsersSchema = Joi.object({
+    userIds: Joi.array().items(idSchema)
+});

@@ -1,10 +1,16 @@
-import {Op} from 'sequelize';
+import { Op } from 'sequelize';
 import uuidv1 from 'uuid/v1';
 import User from '../models/user';
 
 class UsersService {
-    static async filter(params: { loginSubstring: string; limit: number }) {
-        const users = await User.findAll({
+    userModel: typeof User;
+
+    constructor(UserModal: typeof User) {
+        this.userModel = UserModal;
+    }
+
+    async filter(params: { loginSubstring: string; limit: number }) {
+        const users = await this.userModel.findAll({
             where: {
                 login: {
                     [Op.like]: `%${params.loginSubstring}%`
@@ -16,14 +22,14 @@ class UsersService {
         return users;
     }
 
-    static async findById(id: string) {
-        const user = await User.findByPk(id);
+    async findById(id: string) {
+        const user = await this.userModel.findByPk(id);
 
         return user;
     }
 
-    static async add({login, age, password}: Partial<User>) {
-        const user: User = await User.create({
+    async add({ login, age, password }: Partial<User>) {
+        const user: User = await this.userModel.create({
             id: uuidv1(),
             login,
             password,
@@ -33,26 +39,28 @@ class UsersService {
         return user;
     }
 
-    static async updateById({id, login, age, password}: Partial<User>) {
-        const user = await UsersService.findById(id);
+    async updateById({
+        id, login, age, password
+    }: Partial<User>) {
+        const user = await this.findById(id);
 
         if (!user) {
             throw new Error('User not found');
         }
 
-        const updatedUser = await user.update({login, age, password});
+        const updatedUser = await user.update({ login, age, password });
 
         return updatedUser;
     }
 
-    static async deleteById(id: string) {
-        const user = await UsersService.findById(id);
+    async deleteById(id: string) {
+        const user = await this.findById(id);
 
         if (!user) {
             throw new Error('User not found');
         }
 
-        await user.update({isDeleted: true});
+        await user.update({ isDeleted: true });
 
         return user;
     }

@@ -2,7 +2,7 @@ import {
     Response,
     Router
 } from 'express';
-import {ValidatedRequest} from 'express-joi-validation';
+import { ValidatedRequest } from 'express-joi-validation';
 
 import {
     postAndPutUserSchema,
@@ -24,8 +24,10 @@ import {
     DeleteUserSchema
 } from '../types/users-types';
 import UsersService from '../services/users';
+import User from '../models/user';
 
 export const usersRouter = Router();
+const usersService = new UsersService(User);
 
 usersRouter
     .get(
@@ -34,9 +36,9 @@ usersRouter
         async (req: ValidatedRequest<GetUsersSchema>, res: Response) => {
             try {
                 const limit = parseInt(req.query.limit, 10) || 1;
-                const {login} = req.query;
+                const { login } = req.query;
 
-                const filteredUsers = await UsersService.filter({
+                const filteredUsers = await usersService.filter({
                     loginSubstring: login,
                     limit
                 });
@@ -51,7 +53,7 @@ usersRouter
         validateBodySchema(postAndPutUserSchema),
         async (req: ValidatedRequest<PostUserSchema>, res: Response) => {
             try {
-                const user = await UsersService.add({
+                const user = await usersService.add({
                     login: req.body.login,
                     password: req.body.password,
                     age: req.body.age
@@ -67,7 +69,7 @@ usersRouter
         validateParamsSchema(getUserByIdSchema),
         async (req: ValidatedRequest<GetUsersByIdSchema>, res: Response) => {
             try {
-                const user = await UsersService.findById(req.params.userId);
+                const user = await usersService.findById(req.params.userId);
 
                 res.status(200).json(user);
             } catch (error) {
@@ -79,7 +81,7 @@ usersRouter
         validateParamsSchema(putUserParamsSchema),
         async (req: ValidatedRequest<PutUserSchema>, res: Response) => {
             try {
-                const updatedUser = UsersService.updateById({
+                const updatedUser = usersService.updateById({
                     id: req.params.userId,
                     login: req.body.login,
                     password: req.body.password,
@@ -97,7 +99,7 @@ usersRouter
         async (req: ValidatedRequest<DeleteUserSchema>, res: Response) => {
 
             try {
-                const deletedUser = await UsersService.deleteById(req.params.userId);
+                const deletedUser = await usersService.deleteById(req.params.userId);
 
                 res.status(200).json(deletedUser);
             } catch (error) {

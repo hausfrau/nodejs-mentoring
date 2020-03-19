@@ -33,3 +33,5 @@ export const putUserParamsSchema = Joi.object({
 export const deleteUserSchema = Joi.object({
     userId: Joi.string().required()
 });
+
+export const idSchema = Joi.string().guid({ version: ['uuidv4'] });
