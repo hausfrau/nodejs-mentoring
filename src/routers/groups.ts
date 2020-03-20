@@ -25,6 +25,7 @@ import {
 import GroupsService from '../services/groups';
 import Group from '../models/group';
 import User from '../models/user';
+import debug from '../middlewares/debug-logger';
 
 export const groupsRouter = Router();
 const groupsService = new GroupsService(Group, User);
@@ -32,10 +33,12 @@ const groupsService = new GroupsService(Group, User);
 groupsRouter
     .get(
         '/',
-        async (_req: Request, res: Response) => {
+        async (req: Request, res: Response) => {
             try {
+                debug(`Groups: [method: ${req.method}]`);
                 const groups = await groupsService.findAll();
 
+                debug(`Groups: ${groups ? 'groups are found' : 'groups are not found'}`);
                 res.status(200).json(groups);
             } catch (error) {
                 res.status(400).send(error);
@@ -46,11 +49,13 @@ groupsRouter
         validateBodySchema(postAndPutGroupSchema),
         async (req: ValidatedRequest<PostGroupSchema>, res: Response) => {
             try {
+                debug(`Groups: [method: ${req.method}]`);
                 const group = await groupsService.add({
                     name: req.body.name,
                     permissions: req.body.permissions
                 });
 
+                debug(`Groups: ${group ? 'groups is added' : 'group is not added'}`);
                 res.status(200).json(group);
             } catch (error) {
                 res.status(400).send(error);
@@ -61,8 +66,10 @@ groupsRouter
         validateParamsSchema(getGroupByIdSchema),
         async (req: ValidatedRequest<GetGroupByIdSchema>, res: Response) => {
             try {
+                debug(`Groups: [method: ${req.method}] [params.id: ${req.params.id}]`);
                 const group = await groupsService.findById(req.params.id);
 
+                debug(`Groups: ${group ? 'group is found' : 'group is not found'}`);
                 res.status(200).json(group);
             } catch (error) {
                 res.status(400).send(error);
@@ -73,12 +80,14 @@ groupsRouter
         validateParamsSchema(putGroupParamsSchema),
         async (req: ValidatedRequest<PutGroupSchema>, res: Response) => {
             try {
+                debug(`Groups: [method: ${req.method}] [params.id: ${req.params.id}]`);
                 const updatedGroup = await groupsService.updateById({
                     id: req.params.id,
                     name: req.body.name,
                     permissions: req.body.permissions
                 });
 
+                debug(`Groups: ${updatedGroup ? 'group is updated' : 'group is not updated'}`);
                 res.status(200).json(updatedGroup);
             } catch (error) {
                 res.status(400).send(error);
@@ -88,10 +97,11 @@ groupsRouter
         '/:id',
         validateParamsSchema(deleteGroupSchema),
         async (req: ValidatedRequest<DeleteGroupSchema>, res: Response) => {
-
             try {
+                debug(`Groups: [method: ${req.method}] [params.id: ${req.params.id}]`);
                 const deletedGroup = await groupsService.deleteById(req.params.id);
 
+                debug(`Groups: ${deletedGroup ? 'group is deleted' : 'group is not deleted'}`);
                 res.status(200).json(deletedGroup);
             } catch (error) {
                 res.status(400).send(error);
@@ -103,11 +113,12 @@ groupsRouter
         validateParamsSchema(putGroupParamsSchema),
         async (req: ValidatedRequest<PutGroupSchema>, res: Response) => {
             try {
+                debug(`Groups: [method: ${req.method}] [params.id: ${req.params.id}]`);
                 const addedUsers = await groupsService.addUsersToGroup(
                     req.params.id,
                     req.body.userIds
                 );
-
+                debug(`Groups: ${addedUsers ? 'users are added into group' : 'users are not added into groupd'}`);
                 res.status(200).json(addedUsers);
             } catch (error) {
                 res.status(400).json(error);
