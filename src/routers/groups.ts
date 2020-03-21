@@ -44,6 +44,13 @@ groupsRouter
                 res.status(400).send(error);
             }
         })
+    //  This code to test the logging unhandled rejection by winston
+    /* .get('/', (_req: Request, res: Response) => {
+        groupsService.findAll().then((groups) => {
+            Promise.reject();
+            res.json(groups);
+        });
+    }) */
     .post(
         '/',
         validateBodySchema(postAndPutGroupSchema),
@@ -118,6 +125,7 @@ groupsRouter
                     req.params.id,
                     req.body.userIds
                 );
+
                 debug(`Groups: ${addedUsers ? 'users are added into group' : 'users are not added into groupd'}`);
                 res.status(200).json(addedUsers);
             } catch (error) {
