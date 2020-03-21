@@ -35,6 +35,10 @@ class GroupsService {
             permissions
         });
 
+        if (!group) {
+            throw new Error(`Group is not created! [GroupsService.add] [params: name = ${name}]`);
+        }
+
         return group;
     }
 
@@ -42,10 +46,14 @@ class GroupsService {
         const group = await this.findById(id);
 
         if (!group) {
-            throw new Error('Group not found');
+            throw new Error(`Group is not found! [GroupsService.updateById] [params: id = ${id}]`);
         }
 
         const updatedGroup = group.update({ name, permissions });
+
+        if (!updatedGroup) {
+            throw new Error(`Group is not updated! [GroupsService.updateById] [params: id = ${id}]`);
+        }
 
         return updatedGroup;
     }
@@ -54,10 +62,14 @@ class GroupsService {
         const group = await this.findById(id);
 
         if (!group) {
-            throw new Error('Group not found');
+            throw new Error(`Group is not found! [GroupsService.deleteById] [params: id = ${id}]`);
         }
 
-        group.destroy();
+        const deletedGroup = group.destroy();
+
+        if (!deletedGroup) {
+            throw new Error(`Group is not deleted! [GroupsService.deleteById] [params: id = ${id}]`);
+        }
 
         return group;
     }
@@ -66,7 +78,7 @@ class GroupsService {
         const group = await this.findById(groupId);
 
         if (!group) {
-            throw new Error('Group not found');
+            throw new Error(`Group is not found! [GroupsService.addUsersToGroup] [params: id = ${groupId}]`);
         }
 
         await db.transaction(async (transaction) => {
@@ -80,10 +92,18 @@ class GroupsService {
 
             if (users) {
                 await group.addUsers(users, { transaction });
+            } else {
+                throw new Error(`Users are not found! [GroupsService.addUsersToGroup] [params: userIds = ${userIds}]`);
             }
         });
 
-        return group.getUsers();
+        const addedUsers = group.getUsers();
+
+        if (!addedUsers) {
+            throw new Error(`Users are not added! [GroupsService.addUsersToGroup] [params: userIds = ${userIds}]`);
+        }
+
+        return addedUsers;
     }
 }
 

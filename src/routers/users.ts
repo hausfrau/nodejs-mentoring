@@ -1,4 +1,5 @@
 import {
+    NextFunction,
     Response,
     Router
 } from 'express';
@@ -33,7 +34,7 @@ usersRouter
     .get(
         '/',
         validateQuerySchema(getUsersSchema),
-        async (req: ValidatedRequest<GetUsersSchema>, res: Response) => {
+        async (req: ValidatedRequest<GetUsersSchema>, res: Response, next: NextFunction) => {
             try {
                 const limit = parseInt(req.query.limit, 10) || 1;
                 const { login } = req.query;
@@ -45,7 +46,7 @@ usersRouter
 
                 res.status(200).json(filteredUsers);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         })
     // this code to test the logging uncaught errors by winston
@@ -65,7 +66,7 @@ usersRouter
     .post(
         '/',
         validateBodySchema(postAndPutUserSchema),
-        async (req: ValidatedRequest<PostUserSchema>, res: Response) => {
+        async (req: ValidatedRequest<PostUserSchema>, res: Response, next: NextFunction) => {
             try {
                 const user = await usersService.add({
                     login: req.body.login,
@@ -75,25 +76,25 @@ usersRouter
 
                 res.status(200).json(user);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         })
     .get(
         '/:userId',
         validateParamsSchema(getUserByIdSchema),
-        async (req: ValidatedRequest<GetUsersByIdSchema>, res: Response) => {
+        async (req: ValidatedRequest<GetUsersByIdSchema>, res: Response, next: NextFunction) => {
             try {
                 const user = await usersService.findById(req.params.userId);
 
                 res.status(200).json(user);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         })
     .put('/:userId',
         validateBodySchema(postAndPutUserSchema),
         validateParamsSchema(putUserParamsSchema),
-        async (req: ValidatedRequest<PutUserSchema>, res: Response) => {
+        async (req: ValidatedRequest<PutUserSchema>, res: Response, next: NextFunction) => {
             try {
                 const updatedUser = usersService.updateById({
                     id: req.params.userId,
@@ -104,19 +105,19 @@ usersRouter
 
                 res.status(200).json(updatedUser);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         })
     .delete(
         '/:userId',
         validateParamsSchema(deleteUserSchema),
-        async (req: ValidatedRequest<DeleteUserSchema>, res: Response) => {
+        async (req: ValidatedRequest<DeleteUserSchema>, res: Response, next: NextFunction) => {
 
             try {
                 const deletedUser = await usersService.deleteById(req.params.userId);
 
                 res.status(200).json(deletedUser);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         });

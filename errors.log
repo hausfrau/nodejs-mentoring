@@ -73,3 +73,25 @@
    'SequelizeDatabaseError: column "nan" does not exist\n    at Query.formatError (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/sequelize/lib/dialects/postgres/query.js:366:16)\n    at query.catch.err (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/sequelize/lib/dialects/postgres/query.js:72:18)\n    at tryCatcher (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/util.js:16:23)\n    at Promise._settlePromiseFromHandler (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:547:31)\n    at Promise._settlePromise (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:604:18)\n    at Promise._settlePromise0 (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:649:10)\n    at Promise._settlePromises (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:725:18)\n    at _drainQueueStep (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:93:12)\n    at _drainQueue (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:86:9)\n    at Async._drainQueues (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:102:5)\n    at Immediate.Async.drainQueues [as _onImmediate] (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:15:14)\n    at runCallback (timers.js:705:18)\n    at tryOnImmediate (timers.js:676:5)\n    at processImmediate (timers.js:658:5)\n    at process.topLevelDomainCallback (domain.js:120:23)' }
 { level: 'error',
   message: 'InternalServerError: unhandledRejection' }
+{ message: 'Error: Error: User not found', level: 'error' }
+{ message:
+   '[method: DELETE] [params: [object Object]] Error: [UsersService.deleteById] User not found',
+  level: 'error' }
+{ message:
+   '[method: DELETE] [params: [object Object]] Error: User not found [UsersService.deleteById] [params: id = 6]',
+  level: 'error' }
+{ message:
+   '[method: DELETE] Error: User not found [UsersService.deleteById] [params: id = 6]',
+  level: 'error' }
+{ message:
+   '[method: DELETE] Error: User not found [UsersService.deleteById] [params: id = 9]',
+  level: 'error' }
+{ message:
+   '[method: DELETE] Error: User not found [UsersService.deleteById] [params: id = 9]',
+  level: 'error' }
+{ message:
+   '[method: DELETE] Error: User not found [UsersService.deleteById] [params: id = 9]',
+  level: 'error' }
+{ message:
+   '[method: POST] SequelizeDatabaseError: operator does not exist: character varying = uuid',
+  level: 'error' }
