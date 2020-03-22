@@ -11,6 +11,12 @@ class UsersService {
         this.userModel = UserModal;
     }
 
+    async getUserByLoginAndPassword(login: string, password: string): Promise<User> {
+        const user = await this.userModel.findOne({ where: { login, password } });
+
+        return user;
+    }
+
     async filter(params: { loginSubstring: string; limit: number }) {
         debug(`UsersService.filter: [params: {loginSubstring: ${params.loginSubstring}, limit: ${params.limit}}]`);
         const users = await this.userModel.findAll({

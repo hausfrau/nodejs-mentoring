@@ -27,9 +27,12 @@ import GroupsService from '../services/groups';
 import Group from '../models/group';
 import User from '../models/user';
 import debug from '../middlewares/debug-logger';
+import { checkToken } from '../middlewares/jsonwebtoken-utils';
 
 export const groupsRouter = Router();
 const groupsService = new GroupsService(Group, User);
+
+groupsRouter.use(checkToken);
 
 groupsRouter
     .get(
