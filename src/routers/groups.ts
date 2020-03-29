@@ -3,13 +3,14 @@ import {
     Request,
     Router
 } from 'express';
-import {ValidatedRequest} from 'express-joi-validation';
+import { ValidatedRequest } from 'express-joi-validation';
 
 import {
     postAndPutGroupSchema,
     getGroupByIdSchema,
     putGroupParamsSchema,
-    deleteGroupSchema
+    deleteGroupSchema,
+    addUsersSchema
 } from '../schemas/groups-api';
 import {
     validateBodySchema,
@@ -22,15 +23,18 @@ import {
     DeleteGroupSchema
 } from '../types/groups-types';
 import GroupsService from '../services/groups';
+import Group from '../models/group';
+import User from '../models/user';
 
 export const groupsRouter = Router();
+const groupsService = new GroupsService(Group, User);
 
 groupsRouter
     .get(
         '/',
         async (_req: Request, res: Response) => {
             try {
-                const groups = await GroupsService.findAll();
+                const groups = await groupsService.findAll();
 
                 res.status(200).json(groups);
             } catch (error) {
@@ -42,7 +46,7 @@ groupsRouter
         validateBodySchema(postAndPutGroupSchema),
         async (req: ValidatedRequest<PostGroupSchema>, res: Response) => {
             try {
-                const group = await GroupsService.add({
+                const group = await groupsService.add({
                     name: req.body.name,
                     permissions: req.body.permissions
                 });
@@ -57,7 +61,7 @@ groupsRouter
         validateParamsSchema(getGroupByIdSchema),
         async (req: ValidatedRequest<GetGroupByIdSchema>, res: Response) => {
             try {
-                const group = await GroupsService.findById(req.params.id);
+                const group = await groupsService.findById(req.params.id);
 
                 res.status(200).json(group);
             } catch (error) {
@@ -69,7 +73,7 @@ groupsRouter
         validateParamsSchema(putGroupParamsSchema),
         async (req: ValidatedRequest<PutGroupSchema>, res: Response) => {
             try {
-                const updatedGroup = GroupsService.updateById({
+                const updatedGroup = await groupsService.updateById({
                     id: req.params.id,
                     name: req.body.name,
                     permissions: req.body.permissions
@@ -86,10 +90,27 @@ groupsRouter
         async (req: ValidatedRequest<DeleteGroupSchema>, res: Response) => {
 
             try {
-                const deletedGroup = await GroupsService.deleteById(req.params.id);
+                const deletedGroup = await groupsService.deleteById(req.params.id);
 
                 res.status(200).json(deletedGroup);
             } catch (error) {
                 res.status(400).send(error);
             }
-        });
+        })
+    .post(
+        '/addUsers/:id',
+        validateBodySchema(addUsersSchema),
+        validateParamsSchema(putGroupParamsSchema),
+        async (req: ValidatedRequest<PutGroupSchema>, res: Response) => {
+            try {
+                const addedUsers = await groupsService.addUsersToGroup(
+                    req.params.id,
+                    req.body.userIds
+                );
+
+                res.status(200).json(addedUsers);
+            } catch (error) {
+                res.status(400).json(error);
+            }
+        }
+    );
