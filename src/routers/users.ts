@@ -48,6 +48,20 @@ usersRouter
                 res.status(400).send(error);
             }
         })
+    // this code to test the logging uncaught errors by winston
+    /* .get(
+        '/',
+        async (req: Request, res: Response) => {
+            const limit = parseInt(req.query.limit, 10);
+            const { login } = req.query;
+
+            const filteredUsers = await usersService.filter({
+                loginSubstring: login,
+                limit
+            });
+
+            res.status(200).json(filteredUsers);
+        }) */
     .post(
         '/',
         validateBodySchema(postAndPutUserSchema),
