@@ -95,3 +95,23 @@
 { message:
    '[method: POST] SequelizeDatabaseError: operator does not exist: character varying = uuid',
   level: 'error' }
+{ code: 'EADDRINUSE',
+  errno: 'EADDRINUSE',
+  syscall: 'listen',
+  address: '::',
+  port: 3000,
+  level: 'error',
+  message:
+   'InternalServerError: uncaughtExceptionlisten EADDRINUSE: address already in use :::3000',
+  stack:
+   'Error: listen EADDRINUSE: address already in use :::3000\n    at Server.setupListenHandle [as _listen2] (net.js:1277:14)\n    at listenInCluster (net.js:1325:12)\n    at Server.listen (net.js:1412:7)\n    at Function.listen (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/express/lib/application.js:618:24)\n    at database_1.default.sync.then (/home/osboxes/WebstormProjects/nodejs-mentoring/src/app.ts:28:17)\n    at tryCatcher (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/util.js:16:23)\n    at Promise._settlePromiseFromHandler (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:547:31)\n    at Promise._settlePromise (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:604:18)\n    at Promise._settlePromise0 (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:649:10)\n    at Promise._settlePromises (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:729:18)\n    at _drainQueueStep (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:93:12)\n    at _drainQueue (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:86:9)\n    at Async._drainQueues (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:102:5)\n    at Immediate.Async.drainQueues (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:15:14)\n    at runCallback (timers.js:705:18)\n    at tryOnImmediate (timers.js:676:5)\n    at processImmediate (timers.js:658:5)\n    at process.topLevelDomainCallback (domain.js:120:23)' }
+{ code: 'EADDRINUSE',
+  errno: 'EADDRINUSE',
+  syscall: 'listen',
+  address: '::',
+  port: 3000,
+  level: 'error',
+  message:
+   'InternalServerError: uncaughtExceptionlisten EADDRINUSE: address already in use :::3000',
+  stack:
+   'Error: listen EADDRINUSE: address already in use :::3000\n    at Server.setupListenHandle [as _listen2] (net.js:1277:14)\n    at listenInCluster (net.js:1325:12)\n    at Server.listen (net.js:1412:7)\n    at Function.listen (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/express/lib/application.js:618:24)\n    at database_1.default.sync.then (/home/osboxes/WebstormProjects/nodejs-mentoring/src/app.ts:28:17)\n    at tryCatcher (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/util.js:16:23)\n    at Promise._settlePromiseFromHandler (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:547:31)\n    at Promise._settlePromise (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:604:18)\n    at Promise._settlePromise0 (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:649:10)\n    at Promise._settlePromises (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/promise.js:729:18)\n    at _drainQueueStep (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:93:12)\n    at _drainQueue (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:86:9)\n    at Async._drainQueues (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:102:5)\n    at Immediate.Async.drainQueues (/home/osboxes/WebstormProjects/nodejs-mentoring/node_modules/bluebird/js/release/async.js:15:14)\n    at runCallback (timers.js:705:18)\n    at tryOnImmediate (timers.js:676:5)\n    at processImmediate (timers.js:658:5)\n    at process.topLevelDomainCallback (domain.js:120:23)' }

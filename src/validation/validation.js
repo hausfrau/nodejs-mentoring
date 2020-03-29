@@ -1,17 +1,17 @@
 export function errorResponse(schemaErrors) {
     const errors = schemaErrors.map((error) => {
-        let {path, message} = error;
-        return {path, message};
+        let { path, message } = error;
+        return { path, message };
     });
     return {
         status: 'failed',
         errors
-    }
-};
+    };
+}
 
 export function validateBodySchema(schema) {
     return (req, res, next) => {
-        const {error} = schema.validate(req.body, {
+        const { error } = schema.validate(req.body, {
             abortEarly: false,
             allowUnknown: false
         });
@@ -26,7 +26,7 @@ export function validateBodySchema(schema) {
 
 export function validateQuerySchema(schema) {
     return (req, res, next) => {
-        const {error} = schema.validate(req.query, {
+        const { error } = schema.validate(req.query, {
             abortEarly: false,
             allowUnknown: false
         });
@@ -41,7 +41,7 @@ export function validateQuerySchema(schema) {
 
 export function validateParamsSchema(schema) {
     return (req, res, next) => {
-        const {error} = schema.validate(req.params, {
+        const { error } = schema.validate(req.params, {
             abortEarly: false,
             allowUnknown: false
         });
