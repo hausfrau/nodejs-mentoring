@@ -1,7 +1,8 @@
 import {
     Response,
     Request,
-    Router
+    Router,
+    NextFunction
 } from 'express';
 import { ValidatedRequest } from 'express-joi-validation';
 
@@ -33,7 +34,7 @@ const groupsService = new GroupsService(Group, User);
 groupsRouter
     .get(
         '/',
-        async (req: Request, res: Response) => {
+        async (req: Request, res: Response, next: NextFunction) => {
             try {
                 debug(`Groups: [method: ${req.method}]`);
                 const groups = await groupsService.findAll();
@@ -41,7 +42,7 @@ groupsRouter
                 debug(`Groups: ${groups ? 'groups are found' : 'groups are not found'}`);
                 res.status(200).json(groups);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         })
     //  This code to test the logging unhandled rejection by winston
@@ -54,7 +55,7 @@ groupsRouter
     .post(
         '/',
         validateBodySchema(postAndPutGroupSchema),
-        async (req: ValidatedRequest<PostGroupSchema>, res: Response) => {
+        async (req: ValidatedRequest<PostGroupSchema>, res: Response, next: NextFunction) => {
             try {
                 debug(`Groups: [method: ${req.method}]`);
                 const group = await groupsService.add({
@@ -65,13 +66,13 @@ groupsRouter
                 debug(`Groups: ${group ? 'groups is added' : 'group is not added'}`);
                 res.status(200).json(group);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         })
     .get(
         '/:id',
         validateParamsSchema(getGroupByIdSchema),
-        async (req: ValidatedRequest<GetGroupByIdSchema>, res: Response) => {
+        async (req: ValidatedRequest<GetGroupByIdSchema>, res: Response, next: NextFunction) => {
             try {
                 debug(`Groups: [method: ${req.method}] [params.id: ${req.params.id}]`);
                 const group = await groupsService.findById(req.params.id);
@@ -79,13 +80,13 @@ groupsRouter
                 debug(`Groups: ${group ? 'group is found' : 'group is not found'}`);
                 res.status(200).json(group);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         })
     .put('/:id',
         validateBodySchema(postAndPutGroupSchema),
         validateParamsSchema(putGroupParamsSchema),
-        async (req: ValidatedRequest<PutGroupSchema>, res: Response) => {
+        async (req: ValidatedRequest<PutGroupSchema>, res: Response, next: NextFunction) => {
             try {
                 debug(`Groups: [method: ${req.method}] [params.id: ${req.params.id}]`);
                 const updatedGroup = await groupsService.updateById({
@@ -97,13 +98,13 @@ groupsRouter
                 debug(`Groups: ${updatedGroup ? 'group is updated' : 'group is not updated'}`);
                 res.status(200).json(updatedGroup);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         })
     .delete(
         '/:id',
         validateParamsSchema(deleteGroupSchema),
-        async (req: ValidatedRequest<DeleteGroupSchema>, res: Response) => {
+        async (req: ValidatedRequest<DeleteGroupSchema>, res: Response, next: NextFunction) => {
             try {
                 debug(`Groups: [method: ${req.method}] [params.id: ${req.params.id}]`);
                 const deletedGroup = await groupsService.deleteById(req.params.id);
@@ -111,14 +112,14 @@ groupsRouter
                 debug(`Groups: ${deletedGroup ? 'group is deleted' : 'group is not deleted'}`);
                 res.status(200).json(deletedGroup);
             } catch (error) {
-                res.status(400).send(error);
+                next(error);
             }
         })
     .post(
         '/addUsers/:id',
         validateBodySchema(addUsersSchema),
         validateParamsSchema(putGroupParamsSchema),
-        async (req: ValidatedRequest<PutGroupSchema>, res: Response) => {
+        async (req: ValidatedRequest<PutGroupSchema>, res: Response, next: NextFunction) => {
             try {
                 debug(`Groups: [method: ${req.method}] [params.id: ${req.params.id}]`);
                 const addedUsers = await groupsService.addUsersToGroup(
@@ -129,7 +130,7 @@ groupsRouter
                 debug(`Groups: ${addedUsers ? 'users are added into group' : 'users are not added into groupd'}`);
                 res.status(200).json(addedUsers);
             } catch (error) {
-                res.status(400).json(error);
+                next(error);
             }
         }
     );

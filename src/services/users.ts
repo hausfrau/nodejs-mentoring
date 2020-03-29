@@ -12,7 +12,7 @@ class UsersService {
     }
 
     async filter(params: { loginSubstring: string; limit: number }) {
-        debug(`UsersService.filter: [params: {loginSubstring: ${params.loginSubstring}, limit: ${params.limit}}`);
+        debug(`UsersService.filter: [params: {loginSubstring: ${params.loginSubstring}, limit: ${params.limit}}]`);
         const users = await this.userModel.findAll({
             where: {
                 login: {
@@ -43,6 +43,10 @@ class UsersService {
             age
         });
 
+        if (!user) {
+            throw new Error(`User is not added! [UsersService.add] [params: login = ${login}]`);
+        }
+
         debug(`UsersService.add: ${user ? 'user is added' : 'user is not added'}`);
         return user;
     }
@@ -54,10 +58,14 @@ class UsersService {
         const user = await this.findById(id);
 
         if (!user) {
-            throw new Error('User not found');
+            throw new Error(`User not found! [UsersService.updateById] [params: id = ${id}]`);
         }
 
         const updatedUser = await user.update({ login, age, password });
+
+        if (!updatedUser) {
+            throw new Error(`User is not updated! [UsersService.updateById] [params: id = ${id}]`);
+        }
 
         debug(`UsersService.updateById: ${updatedUser ? 'user is updated' : 'user is not updated'}`);
         return updatedUser;
@@ -68,12 +76,16 @@ class UsersService {
         const user = await this.findById(id);
 
         if (!user) {
-            throw new Error('User not found');
+            throw new Error(`User not found! [UsersService.deleteById] [params: id = ${id}]`);
         }
 
-        await user.update({ isDeleted: true });
+        const deletedUser = await user.update({ isDeleted: true });
 
-        return user;
+        if (!deletedUser) {
+            throw new Error(`User is not deleted! [UsersService.deleteById] [params: id = ${id}]`);
+        }
+
+        return deletedUser;
     }
 }
 
