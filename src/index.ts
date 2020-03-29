@@ -1,4 +1,5 @@
 import express, { json } from 'express';
+import cors from 'cors';
 
 import { loginRouter } from './routers/login';
 import { usersRouter } from './routers/users';
@@ -17,6 +18,7 @@ db
     .then(
         () => {
             app.use(json());
+            app.use(cors());
             app.use('/api/login', loginRouter);
             app.use('/api/users', usersRouter);
             app.use('/api/groups', groupsRouter);
