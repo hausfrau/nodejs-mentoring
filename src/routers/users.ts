@@ -26,9 +26,12 @@ import {
 } from '../types/users-types';
 import UsersService from '../services/users';
 import User from '../models/user';
+import { checkToken } from '../middlewares/jsonwebtoken-utils';
 
 export const usersRouter = Router();
 const usersService = new UsersService(User);
+
+usersRouter.use(checkToken);
 
 usersRouter
     .get(

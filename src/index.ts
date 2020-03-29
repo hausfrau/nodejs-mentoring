@@ -1,5 +1,6 @@
 import express, { json } from 'express';
 
+import { loginRouter } from './routers/login';
 import { usersRouter } from './routers/users';
 import { groupsRouter } from './routers/groups';
 import { winstonLogger } from './middlewares/winston-logger';
@@ -16,6 +17,7 @@ db
     .then(
         () => {
             app.use(json());
+            app.use('/api/login', loginRouter);
             app.use('/api/users', usersRouter);
             app.use('/api/groups', groupsRouter);
 
